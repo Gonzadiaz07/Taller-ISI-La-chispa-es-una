@@ -1,13 +1,9 @@
-from typing import TYPE_CHECKING #Constante boolean que indica si se está realizando una verificación de tipos en tiempo de ejecución. Se utiliza para evitar importaciones circulares y mejorar el rendimiento en tiempo de ejecución.
 from Autor import Autor #Importamos la clase Autor desde el archivo autor.py.
 from Rol import Rol #Importamos la clase Rol desde el archivo rol.py.
-
-#Evita errores de importacion mientras se desarrollan las demas clases.
-if TYPE_CHECKING:
-    from Pregunta import Pregunta #Importamos la clase Pregunta desde el archivo pregunta.py.
-    from Respuesta import Respuesta #Importamos la clase Respuesta desde el archivo respuesta.py.
-    from Categoria import Categoria #Importamos la clase Categoria desde el archivo categoria.py.
-    from Voto import Voto #Importamos la clase Voto desde el archivo voto.py.
+from Categoria import Categoria #Importamos la clase Categoria desde el archivo categoria.py.
+from Respuesta import Respuesta #Importamos la clase Respuesta desde el archivo respuesta.py.
+from Voto import Voto #Importamos la clase Voto desde el archivo voto.py.
+from Pregunta import Pregunta #Importamos la clase Pregunta desde el archivo pregunta.py.
 
 class Usuario(Autor): #Definimos la clase Usuario que hereda de la clase Autor.
     def __init__(self, id_Autor: int, nombre: str, email:str, contraseña: str, rol: Rol, reputacion: int = 0): #Definimos el constructor de la clase Usuario con sus atributos.

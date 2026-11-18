@@ -8,10 +8,11 @@ class Voto:
         self._fecha_emision= fecha_emision
         self._votante = votante 
 
-    # Returna el atributo es_positivo 
+    # Retorna el atributo es_positivo 
     def es_positivo(self) -> bool:
         return self._es_positivo
 
-if __name__ == "__main__":
-    voto_prueba = Voto(1, True, date.today(), "UsuarioDePrueba")
-    print("¿Es positivo?:", voto_prueba.es_positivo())
+    # Prueba para verificar que la clase anda correctamente
+    if __name__ == "__main__":
+        voto_prueba = Voto(1, True, date.today(), "UsuarioDePrueba")
+        print("¿Es positivo?:", voto_prueba.es_positivo())

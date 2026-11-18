@@ -2,11 +2,15 @@ from datetime import date
 
 class Pregunta: 
     def __init__(self, id: int, titulo: str, cuerpo: str, fecha_publicacion: date, categoria = None, autor = None):
+        self._id = id
+        self._titulo = titulo
+        self._cuerpo = cuerpo
+        self._fecha_publicacion = fecha_publicacion
         self._categoria = categoria
-        self._autor = autor 
-        self._respuestas = [] 
+        self._autor = autor
+        self._respuestas = []
         self._etiquetas = []
-        self._votos = [] 
+        self._votos = []
 
     def asignar_categoria(self, categoria) -> None:
         self._categoria = categoria

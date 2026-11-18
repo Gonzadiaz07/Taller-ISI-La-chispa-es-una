@@ -1,8 +1,8 @@
 from datetime import datetime 
 from autor import Autor 
 from gestorIA import GestorIA
-from pregunta import Pregunta
-from respuesta import Respuesta
+from Pregunta import Pregunta
+from Respuesta import Respuesta
 
 class AgenteIA(Autor): #Se declara la clase AgenteIA y se le pone como parametro Autor, ya que la misma hereda informacion de esta ultima clase
     def __init__(
@@ -28,4 +28,19 @@ class AgenteIA(Autor): #Se declara la clase AgenteIA y se le pone como parametro
             fechaPublicacion=datetime.now(), # Fecha y hora que se genero
             autor=self, # 
         )
+    #########
+    def get_reputacion(self) -> int:
+        return self._reputacion
+
+    def procesarGeneracionAutomatica(self, pregunta: Pregunta) -> Respuesta:
+        # Le pide al GestorIA que redacte el texto para la pregunta y construye el objeto Respuesta asociado
+        texto_generado = self._gestorIA.redactarTexto(pregunta)
+
+        nueva_respuesta = Respuesta(
+            id=0,  # Se le asigna el valor de 0 hasta ser reemplazado
+            cuerpo=texto_generado,  # Texto redactado por la IA
+            fecha_publicacion=datetime.now().date(),  # Fecha en que se generó
+            autor=self,
+        )
+
         return nueva_respuesta

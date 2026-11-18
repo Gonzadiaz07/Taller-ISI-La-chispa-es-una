@@ -1,5 +1,5 @@
 from estrategiaLLM import EstrategiaLLM
-from pregunta import Pregunta
+from Pregunta import Pregunta
 
 
 class GestorIA:

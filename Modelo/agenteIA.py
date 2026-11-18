@@ -1,6 +1,6 @@
 from datetime import datetime 
 from autor import Autor 
-from gestor_ia import GestorIA
+from gestorIA import GestorIA
 from pregunta import Pregunta
 from respuesta import Respuesta
 

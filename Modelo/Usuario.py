@@ -1,5 +1,6 @@
-from Autor import Autor #Importamos la clase Autor desde el archivo autor.py.
-from Rol import Rol #Importamos la clase Rol desde el archivo rol.py.
+from datetime import date #Importamos date para asignar la fecha actual al crear preguntas, respuestas y votos.
+from autor import Autor #Importamos la clase Autor desde el archivo autor.py.
+from rol import Rol #Importamos la clase Rol desde el archivo rol.py.
 from Categoria import Categoria #Importamos la clase Categoria desde el archivo categoria.py.
 from Respuesta import Respuesta #Importamos la clase Respuesta desde el archivo respuesta.py.
 from Voto import Voto #Importamos la clase Voto desde el archivo voto.py.
@@ -11,6 +12,7 @@ class Usuario(Autor): #Definimos la clase Usuario que hereda de la clase Autor.
         self._email = email
         self._contraseña = contraseña
         self._rol = rol
+        self._contador_id = 0 #Contador interno para generar IDs incrementales al crear preguntas, respuestas o votos.
 
     #Implementacion del metodo abstracto get_reputacion de la clase Autor.
     def get_reputacion(self) -> int: 
@@ -22,11 +24,13 @@ class Usuario(Autor): #Definimos la clase Usuario que hereda de la clase Autor.
 
     #Metodos que conectan con los modulos 2 y 3
     def publicar_pregunta(self, titulo: str, cuerpo: str, categoria: 'Categoria') -> 'Pregunta': #Metodo que permite publicar una pregunta en la aplicacion.
-        nueva_pregunta= Pregunta(titulo=titulo, cuerpo=cuerpo, categoria=categoria, autor=self) #Creamos una nueva instancia de la clase Pregunta con los parametros recibidos.
+        self._contador_id += 1
+        nueva_pregunta = Pregunta(id=self._contador_id, titulo=titulo, cuerpo=cuerpo, fecha_publicacion=date.today(), categoria=categoria, autor=self) #Creamos una nueva instancia de la clase Pregunta con los parametros recibidos, un ID autogenerado y la fecha actual.
         return nueva_pregunta #Retornamos la nueva pregunta creada.
     
     def publicar_respuesta(self, pregunta: 'Pregunta', cuerpo: str) -> 'Respuesta':
-        nueva_respuesta = Respuesta(cuerpo=cuerpo, autor=self) #Creamos una nueva instancia de la clase Respuesta con los parametros recibidos.
+        self._contador_id += 1
+        nueva_respuesta = Respuesta(id=self._contador_id, cuerpo=cuerpo, fecha_publicacion=date.today(), autor=self) #Creamos una nueva instancia de la clase Respuesta con los parametros recibidos, un ID autogenerado y la fecha actual.
         pregunta.agregar_respuesta(nueva_respuesta) #Agregamos la nueva respuesta a la pregunta correspondiente.
         return nueva_respuesta #Retornamos la nueva respuesta creada.
 
@@ -34,5 +38,6 @@ class Usuario(Autor): #Definimos la clase Usuario que hereda de la clase Autor.
         respuesta.marcar_como_aceptada()
 
     def votar(self, elemento_id: int, es_positivo: bool) -> 'Voto':
-       nuevo_voto = Voto(es_positivo=es_positivo, votante=self) #Creamos una nueva instancia de la clase Voto con los parametros recibidos.
-       return nuevo_voto #Retornamos el nuevo voto creado.
+        self._contador_id += 1
+        nuevo_voto = Voto(id=self._contador_id, es_positivo=es_positivo, fecha_emision=date.today(), votante=self) #Creamos una nueva instancia de la clase Voto con los parametros recibidos, un ID autogenerado y la fecha actual.
+        return nuevo_voto #Retornamos el nuevo voto creado.

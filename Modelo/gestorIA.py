@@ -16,6 +16,7 @@ class GestorIA:
             raise ValueError("No hay una estrategia de IA configurada.")
 
         # Armamos el texto de contexto con los datos de la pregunta
-        contexto = f"Título: {pregunta._titulo}\nDetalle: {pregunta._cuerpo}"
+        contexto = ("Respondé de forma breve y concisa (máximo 4 líneas, sin bloques de código) "
+                    f"a la siguiente pregunta de un foro:\nTítulo: {pregunta._titulo}\nDetalle: {pregunta._cuerpo}")
 
         return self._estrategiaActual.generarRespuesta(contexto)

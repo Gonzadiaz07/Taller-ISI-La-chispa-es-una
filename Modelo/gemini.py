@@ -1,5 +1,5 @@
+import requests # Se debe hacer en la terminal powershell: py -m pip install requests
 from estrategiaLLM import EstrategiaLLM
-
 
 class Gemini(EstrategiaLLM):
     def __init__(self, apiKey: str, endpointUrl: str):
@@ -18,7 +18,22 @@ class Gemini(EstrategiaLLM):
     def generarRespuesta(self, contexto: str) -> str:
         # Utilizamos el metodo de estrategiaLLM para generar una respuesta a partir del contexto recibido
         if not self.conectarApiGemini():
-            raise ConnectionError("No se pudo conectar con la API de Gemini.")
+            raise ConnectionError("Falta la API Key o el endpoint de Google DeepMind.")
 
-        # Simulación de la respuesta generada por el modelo
-        return f"[Respuesta generada por Gemini] Basado en: {contexto}"
+        headers = {
+            "Content-Type": "application/json",
+            "x-goog-api-key": self._apiKey,
+        }
+        payload = {
+            "contents": [{"parts": [{"text": contexto}]}]
+        }
+
+        response = requests.post(
+            self._endpointUrl, headers=headers, json=payload, timeout=90
+        )
+        if not response.ok:
+            print("DETALLE DEL ERROR:", response.text)
+        response.raise_for_status()
+
+        data = response.json()
+        return data["candidates"][0]["content"]["parts"][0]["text"]

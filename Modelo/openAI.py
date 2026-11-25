@@ -1,24 +1,42 @@
 from estrategiaLLM import EstrategiaLLM
-
+import requests # Se debe hacer en la terminal powershell: py -m pip install requests
 
 class OpenAI(EstrategiaLLM):
     def __init__(self, apiKey: str, endpointUrl: str):
         self._apiKey = apiKey
         self._endpointUrl = endpointUrl
 
-   
     def conectarApiOpenAI(self) -> bool:
         # Se verifica que el codigo verifique los nombres parametros y tipos de retorno del diagrama 
-        if not self._apiKey or not self._endpointUrl:
-            return False
-        
-        # Acá iría la lógica real de conexión (por ejemplo, usando la librería requests o google-genai)
-        return True
+        return bool(self._apiKey and self._endpointUrl)
 
     def generarRespuesta(self, contexto: str) -> str:
-        # Utilizamos el metodo de estrategiaLLM para generar una respuesta a partir del contexto recibido
         if not self.conectarApiOpenAI():
-            raise ConnectionError("No se pudo conectar con la API de OpenAI.")
+            raise ConnectionError("Faltan la API Key o el endpoint de OpenAI.")
 
-        # Simulación de la respuesta generada por el modelo
-        return f"[Respuesta generada por OpenAI] Basado en: {contexto}"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self._apiKey}",
+        }
+        payload = {
+            "model": "gpt-4o-mini",
+            "messages": [{"role": "user", "content": contexto}],
+        }
+
+        try:
+            response = requests.post(
+                self._endpointUrl, headers=headers, json=payload, timeout=30
+            )
+            response.raise_for_status()
+            data = response.json()
+            return data["choices"][0]["message"]["content"]
+        except requests.exceptions.HTTPError as e:
+            codigo = (
+                e.response.status_code if e.response is not None else "desconocido"
+            )
+            return (
+                f"[Error OpenAI {codigo}] No se pudo generar la respuesta: "
+                "se requiere una API Key activa con plan de pago/saldo."
+            )
+        except requests.exceptions.RequestException:
+            return "[Error OpenAI] No se pudo establecer conexión con el servidor."

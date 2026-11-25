@@ -34,8 +34,8 @@ etiqueta_ia = Etiqueta(2, "IA")
 
 # Facu crea una pregunta y le asigna etiquetas
 pregunta1 = facu.publicar_pregunta(
-    titulo="¿Cómo funciona el patrón Strategy en Python?",
-    cuerpo="Necesito intercambiar entre Gemini y OpenAI en tiempo de ejecución.",
+    titulo="¿Que son los ArrayList?",
+    cuerpo="En java",
     categoria=cat_programacion
 )
 pregunta1.agregar_etiqueta(etiqueta_python)
@@ -75,13 +75,19 @@ print("Puntuación total de la respuesta (esperado 1):", respuesta_gonza.calcula
 
 # MÓDULO 4: INTELIGENCIA ARTIFICIAL (PATRÓN STRATEGY)
 print("\n=== 4. MÓDULO DE INTELIGENCIA ARTIFICIAL ===")
+
 # Instanciamos las dos estrategias concretas
-estrategia_gemini = Gemini("API_KEY_GEMINI_123", "https://generativelanguage.googleapis.com")
-estrategia_openai = OpenAI("API_KEY_OPENAI_456", "https://api.openai.com/v1")
+estrategia_gemini = Gemini(
+    "PONER-API-Key",
+    endpointUrl="https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+)
+estrategia_openai = OpenAI(
+    "API_KEY_OPENAI_456", 
+    "https://api.openai.com/v1/chat/completions")
 
 # Configuramos el GestorIA empezando con Gemini y creamos el AgenteIA
 gestor_ia = GestorIA(estrategia_gemini)
-agente_ia = AgenteIA(99, "BotAsistente", 0, "Gemini-2.5", gestor_ia)
+agente_ia = AgenteIA(99, "BotAsistente", 0, "Gemini-3.7-flash", gestor_ia)
 
 # Si la pregunta tiene la etiqueta "IA", el agente genera una respuesta automática
 if pregunta1.tiene_etiqueta_ia():
